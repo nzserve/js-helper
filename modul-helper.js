@@ -209,3 +209,101 @@
             }, 1000);
         });
     }
+
+        // USER FLOATING CONSOLE
+    function FloatConsoleUserData() {
+        // 1. Cek & Ambil Konfigurasi dari localStorage
+        const STORAGE_KEY = 'Arka_UserConsole';
+        const defaultData = {
+            position: [300, 20], // [top, left] dalam pixel
+            enable: true
+        };
+
+        let savedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData;
+
+        // Jika enable: false, console tidak akan ditampilkan
+        if (!savedData.enable) return;
+
+        // Sanity check untuk data position
+        const topPos = savedData.position && savedData.position[0] !== undefined ? savedData.position[0] : 300;
+        const leftPos = savedData.position && savedData.position[1] !== undefined ? savedData.position[1] : 20;
+
+        // 2. Buat Elemen Console Box
+        const consoleBox = document.createElement('div');
+        consoleBox.id = 'FloatConsoleUserData';
+
+        // Menggunakan 'left' dan 'top' secara konsisten
+        Object.assign(consoleBox.style, {
+            position: "fixed",
+            top: `${topPos}px`,
+            left: `${leftPos}px`, // Menggunakan 'left'
+            width: "200px",
+            height: "135px",
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            color: "#2ecc71",
+            fontFamily: "monospace",
+            fontSize: "11px",
+            padding: "10px",
+            borderRadius: "8px",
+            boxShadow: "0px 4px 15px rgba(0,0,0,0.5)",
+            zIndex: "999",
+            overflowY: "auto",
+            pointerEvents: "auto",
+            border: "1px solid #333",
+            cursor: "move",
+            userSelect: "none",
+            boxSizing: "border-box",
+            'scrollbar-width': 'none',
+            '-ms-overflow-style': 'none'
+        });
+
+        consoleBox.innerText = "FloatConsoleUserData Initialized...";
+        document.body.appendChild(consoleBox);
+
+        // 3. Logika Drag and Drop & Update localStorage
+        let isDragging = false;
+        let startX, startY, startTop, startLeft;
+
+        consoleBox.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+
+            // Ambil posisi elemen saat ini
+            const rect = consoleBox.getBoundingClientRect();
+            startTop = rect.top;
+            startLeft = rect.left;
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        function onMouseMove(e) {
+            if (!isDragging) return;
+
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+
+            const newTop = startTop + deltaY;
+            const newLeft = startLeft + deltaX; // Geser ke kiri/kanan mengikuti pergerakan mouse
+
+            consoleBox.style.top = `${newTop}px`;
+            consoleBox.style.left = `${newLeft}px`;
+        }
+
+        function onMouseUp() {
+            if (!isDragging) return;
+            isDragging = false;
+
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+
+            // Ambil nilai piksel terbaru
+            const finalTop = parseInt(consoleBox.style.top, 10);
+            const finalLeft = parseInt(consoleBox.style.left, 10);
+
+            // Simpan posisi baru ke localStorage dengan format array [top, left]
+            savedData.position = [finalTop, finalLeft];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
+        }
+    }
