@@ -338,3 +338,74 @@
             return `<div class="notif-alert ${style.bg}" id="${item.id}"><span>${style.icon} ${item.createdDate} ${item.time} - ${escapeHtml(item.message)}</span></div>`;
         }).join('');
     }
+
+    // Master Console
+    function createArkaFloatingConsole() {
+        // Buat container utama untuk layar log
+        const consoleBox = document.createElement("div");
+        consoleBox.id = "arka_float_console";
+
+        // Desain gaya tampilan visual kotak log (Kanan Atas)
+        Object.assign(consoleBox.style, {
+            position: "fixed",
+            top: "90px",
+            right: "20px",
+            width: "350px",
+            height: "200px",
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            color: "#2ecc71", // Teks warna hijau khas hacker/console
+            fontFamily: "monospace",
+            fontSize: "11px",
+            padding: "10px",
+            borderRadius: "8px",
+            boxShadow: "0px 4px 15px rgba(0,0,0,0.5)",
+            zIndex: "99999",
+            overflowY: "auto",
+            pointerEvents: "none", // Agar tidak menghalangi klik pada game di belakangnya
+            border: "1px solid #333"
+        });
+
+        document.body.appendChild(consoleBox);
+
+        // MEMBAJAK (HOOK) CONSOLE.LOG BAWAAN BROWSER
+        const originalLog = console.log;
+        console.log = function (...args) {
+            // Tetap jalankan console.log asli di F12
+            originalLog.apply(console, args);
+
+            // Gabungkan argumen teks log menjadi satu string
+            const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+
+            // Buat elemen baris teks baru di dalam kotak melayang
+            const logLine = document.createElement("div");
+            logLine.style.marginBottom = "4px";
+            logLine.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
+            logLine.style.paddingBottom = "2px";
+
+            // Beri warna khusus jika mengandung kata kunci tertentu
+            if (message.toLowerCase().includes("success") || message.includes("start") || message.includes("done")) {
+                logLine.style.color = "#2ecc71"; // Hijau cerah untuk sukses
+            } else if (message.includes("warning") || message.includes("stop") || message.includes("error")) {
+                logLine.style.color = "#e74c3c"; // Merah untuk peringatan/gagal
+            } else {
+                logLine.style.color = "#f1c40f"; // Kuning untuk info standar
+            }
+
+            // Tambahkan timestamp waktu lokal agar tahu kapan log itu muncul
+            const time = new Date().toLocaleTimeString();
+            logLine.textContent = `[${time}] ${message}`;
+
+            consoleBox.appendChild(logLine);
+
+            // Otomatis gulung (scroll) ke baris paling bawah saat ada log baru
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+
+            // Batasi maksimal menampilkan 50 baris terakhir agar browser tidak lemot
+            while (consoleBox.children.length > 50) {
+                consoleBox.removeChild(consoleBox.firstChild);
+            }
+        };
+    }
+
+    //Run Console
+    //createArkaFloatingConsole();
