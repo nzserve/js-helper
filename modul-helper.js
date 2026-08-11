@@ -310,6 +310,14 @@
         }
     }
 
+    // Styling Config per Tipe Notifikasi
+    const TYPE_STYLES = {
+        info: { bg: 'info', icon: '💡' },
+        success: { bg: 'success', icon: '✅' },
+        warning: { bg: 'warning', icon: '⚠️' },
+        danger: { bg: 'danger', icon: '🚨' }
+    };
+    
     // Render UI Notifikasi
     function renderApp() {
         const items = JSON.parse(localStorage.getItem('vreya_notif') || '[]');
