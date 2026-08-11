@@ -190,10 +190,7 @@
 
     // For reset console location.
     function ResetConsole(){
-        const Rconsole_Button = `
-<button id="ResetConsole" class="nav-btn" style="background-color: rgb(16, 185, 129); font-weight: 600; padding: 0px 0.4rem; height: 24px; font-size: 0.65rem; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;"><span>🖥️ Reset</span></button>
-<div class="tooltip-text">Reset Console</div>
-        `;
+        const Rconsole_Button = `<button id="ResetConsole" class="nav-btn" style="background-color: rgb(16, 185, 129); font-weight: 600; padding: 0px 0.4rem; height: 24px; font-size: 0.65rem; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;"><span>🖥️ Reset</span></button><div class="tooltip-text">Reset Console</div>`;
 
         const Target_Button = unsafeWindow.document.querySelector('#NavGBTN');
         if (Target_Button) {
@@ -308,6 +305,11 @@
             savedData.position = [finalTop, finalLeft];
             localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
         }
+    }
+
+    // Utility Helper: Escaping HTML
+    function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, match => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[match]);
     }
 
     // Styling Config per Tipe Notifikasi
