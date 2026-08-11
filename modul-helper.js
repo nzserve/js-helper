@@ -187,6 +187,8 @@
             }
         };
     }
+
+    // For reset console location.
     function ResetConsole(){
         const Rconsole_Button = `
 <button id="ResetConsole" class="nav-btn" style="background-color: rgb(16, 185, 129); font-weight: 600; padding: 0px 0.4rem; height: 24px; font-size: 0.65rem; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;"><span>🖥️ Reset</span></button>
@@ -210,7 +212,7 @@
         });
     }
 
-        // USER FLOATING CONSOLE
+    // USER FLOATING CONSOLE
     function FloatConsoleUserData() {
         // 1. Cek & Ambil Konfigurasi dari localStorage
         const STORAGE_KEY = 'Arka_UserConsole';
@@ -306,4 +308,23 @@
             savedData.position = [finalTop, finalLeft];
             localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
         }
+    }
+
+    // Render UI Notifikasi
+    function renderApp() {
+        const items = JSON.parse(localStorage.getItem('vreya_notif') || '[]');
+        const container = document.getElementById('notificationsContainer');
+        const emptyState = document.getElementById('emptyState');
+
+        if (items.length === 0) {
+            container.innerHTML = '';
+            emptyState.classList.remove('hidden');
+            return;
+        }
+
+        emptyState.classList.add('hidden');
+        container.innerHTML = items.map(item => {
+            const style = TYPE_STYLES[item.type] || TYPE_STYLES.info;
+            return `<div class="notif-alert ${style.bg}" id="${item.id}"><span>${style.icon} ${item.createdDate} ${item.time} - ${escapeHtml(item.message)}</span></div>`;
+        }).join('');
     }
