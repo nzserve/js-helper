@@ -25,7 +25,7 @@
     }
 
     // ALERT
-    const alertsContainer = unsafeWindow.document.getElementById('alerts-container');
+    // const alertsContainer = unsafeWindow.document.getElementById('alerts-container');
     function createFloatAlert(message, type = 'success') {
         if(message !== "Auto Farm ready for Running"){
             addNotif(message, type);
