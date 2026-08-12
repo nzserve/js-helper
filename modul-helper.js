@@ -25,8 +25,8 @@
     }
 
     // ALERT
-    // const alertsContainer = unsafeWindow.document.getElementById('alerts-container');
     function createFloatAlert(message, type = 'success') {
+        const alertsContainer = unsafeWindow.document.getElementById('alerts-container');
         if(message !== "Auto Farm ready for Running"){
             addNotif(message, type);
         }
@@ -56,6 +56,7 @@
     
     // FUNGSI PEMBUAT FLOATING CONSOLE LOG (Draggable + Header & LocalStorage)
     function createArkaFloatingConsole() {
+        const alertsContainer = unsafeWindow.document.getElementById('alerts-container');
         // Hapus console lama jika sudah ada (mencegah duplikasi saat script dijalankan ulang)
         const existingConsole = document.getElementById("arka_float_console");
         if (existingConsole) {
