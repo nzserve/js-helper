@@ -1,7 +1,6 @@
-    // Fungsi Notifikasi & Alert
+    // Fungsi Notifikasi & Alert (Dengan Auto-Hapus Limit Max)
     function addNotif(message, type) {
         const getTodayDate = () => new Date().toISOString().split('T')[0];
-        // Menggunakan undefined agar otomatis memakai default locale/pengaturan komputer player
         const getCurrentTime = () => new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
 
         let stored = [];
@@ -20,7 +19,15 @@
             time: getCurrentTime()
         };
 
+        // Tambahkan notifikasi baru ke urutan paling atas
         stored.unshift(newNotif);
+
+        // 🎯 AUTO HAPUS: Batasi maksimal simpan 50 notifikasi
+        const MAX_NOTIF = 100;
+        if (stored.length > MAX_NOTIF) {
+            stored = stored.slice(0, MAX_NOTIF); // Menyimpan 50 teratas, sisanya otomatis terhapus
+        }
+
         localStorage.setItem('vreya_notif', JSON.stringify(stored));
     }
 
