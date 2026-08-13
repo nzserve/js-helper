@@ -34,16 +34,25 @@
     // ALERT
     function createFloatAlert(message, type = 'success') {
         const alertsContainer = unsafeWindow.document.getElementById('alerts-container');
-        if(message !== "Auto Farm ready for Running"){
+        if (!alertsContainer) return;
+
+        if (message !== "Auto Farm ready for Running") {
             addNotif(message, type);
+        }
+
+        // 🎯 AUTO HAPUS: Batasi elemen alert di UI maksimal 5 saja
+        const MAX_ALERTS = 5; // Kamu bisa ganti angka ini (misal: 5 sampai 8)
+        while (alertsContainer.children.length >= MAX_ALERTS) {
+            // Hapus alert paling lama (elemen pertama / paling atas)
+            alertsContainer.firstElementChild.remove();
         }
 
         const alertEl = document.createElement('div');
         alertEl.className = `float-alert ${type}`;
         alertEl.innerHTML = `
-                    <span>${message}</span>
-                    <button class="float-alert-close">&times;</button>
-                `;
+            <span>${message}</span>
+            <button class="float-alert-close">&times;</button>
+        `;
 
         const closeAlertBtn = alertEl.querySelector('.float-alert-close');
         closeAlertBtn.addEventListener('click', function () {
