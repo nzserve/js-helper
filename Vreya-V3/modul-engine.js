@@ -1,4 +1,4 @@
-    const alertsContainer = unsafeWindow.document.getElementById('alerts-container');
+    const alertsContainer = window.document.getElementById('alerts-container');
 
     // 1. Ambil URL Parameters
     const Url_Params_Dungeon = new URLSearchParams(location.search);
@@ -2080,10 +2080,10 @@
             const user_pid = findurlObj.searchParams.get('pid');
 
             if (location.href.includes("guild_dungeon_instance.php")){
-                const healBarr = unsafeWindow.document.querySelector(".playerhp .bar .fill");
+                const healBarr = window.document.querySelector(".playerhp .bar .fill");
                 const healBarr_width = healBarr.style.width;
 
-                const healCountdown = unsafeWindow.document.getElementById('healCountdown');
+                const healCountdown = window.document.getElementById('healCountdown');
                 setTimeout(function() {
                     if(healCountdown.innerHTML === "00:00:00"){
                         if(healBarr_width !== "100%"){
