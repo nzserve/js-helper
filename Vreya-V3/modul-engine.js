@@ -1585,7 +1585,7 @@
             const url = g.fightBtn
             let totalDmg = Number(await fetchMonsterDmgValue(url.href)) || 0;
             const numTargetDmg = Number(g.targetDmg);
-            if (totalDmg >= numTargetDmg) {
+            if (totalDmg) {
                 if (g.dmgLabel) {
                     g.dmgLabel.innerHTML = `
 <span>DMG: ${Number(totalDmg).toLocaleString()} / ${numTargetDmg.toLocaleString()}</span>
