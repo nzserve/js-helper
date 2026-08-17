@@ -1833,7 +1833,7 @@
                 return {
                     dgmid: id,
                     totaldmg: totalDmg,
-                    exp: exp: Math.floor(totalDmg * expRate),,
+                    exp: exp: Math.floor(totalDmg * expRate),
                     status: 'waiting',
                 };
             }
